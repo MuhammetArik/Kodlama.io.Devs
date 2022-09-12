@@ -1,4 +1,9 @@
-﻿using Application.Features.Technologies.Models;
+﻿using Application.Features.Technologies.Commands.CreateTechnology;
+using Application.Features.Technologies.Commands.DeleteTechnology;
+using Application.Features.Technologies.Commands.UpdateTechnology;
+using Application.Features.Technologies.Dtos;
+using Application.Features.Technologies.Models;
+using Application.Features.Technologies.Queries.GetByIdTechnology;
 using Application.Features.Technologies.Queries.GetListTechnology;
 using Application.Features.Technologies.Queries.GetListTechnologyByDynamic;
 using Core.Application.Requests;
@@ -26,6 +31,34 @@ namespace WebAPI.Controllers
             GetListTechnologyByDynamicQuery getListByDynamicTechnologyQuery = new GetListTechnologyByDynamicQuery { PageRequest = pageRequest, Dynamic = dynamic };
             TechnologyListModel result = await Mediator.Send(getListByDynamicTechnologyQuery);
             return Ok(result);
+        }
+
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById([FromRoute] GetByIdTechnologyQuery getByIdTechnologyQuery)
+        {
+            TechnologyGetByIdDto technologyGetByIdDto = await Mediator.Send(getByIdTechnologyQuery);
+            return Ok(technologyGetByIdDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] CreateTechnologyCommand createTechnologyCommand)
+        {
+            CreatedTechnologyDto result = await Mediator.Send(createTechnologyCommand);
+            return Created("", result);
+        }
+
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> Delete([FromRoute] DeleteTechnologyCommand deleteTechnologyCommand)
+        {
+            DeletedTechnologyDto deletedTechnologyDto = await Mediator.Send(deleteTechnologyCommand);
+            return Ok(deletedTechnologyDto);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateTechnologyCommand updateTechnologyCommand)
+        {
+            UpdatedTechnologyDto updatedTechnologyDto = await Mediator.Send(updateTechnologyCommand);
+            return Ok(updatedTechnologyDto);
         }
     }
 }
