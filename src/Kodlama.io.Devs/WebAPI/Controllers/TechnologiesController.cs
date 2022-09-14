@@ -43,8 +43,8 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateTechnologyCommand createTechnologyCommand)
         {
-            CreatedTechnologyDto result = await Mediator.Send(createTechnologyCommand);
-            return Created("", result);
+            CreatedTechnologyDto createdTechnologyDto = await Mediator.Send(createTechnologyCommand);
+            return Created("", createdTechnologyDto);
         }
 
         [HttpDelete("{Id}")]
